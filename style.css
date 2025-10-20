@@ -124,7 +124,7 @@ body{
 }
 
 /* body with head and bubble */
-.body{display:flex;flex-direction:column;gap:10px;max-width:78%}
+.body{display:flex;flex-direction:column;gap:10px;max-width:78%;margin-bottom: 12px;  /* 每条消息下面的空隙 */}
 .head{font-size:10px;color:var(--muted);letter-spacing:0.06em}
 .bubble {
   font-family: 'FusionPixel', 'Press Start 2P', monospace;
