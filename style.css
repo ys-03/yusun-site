@@ -126,17 +126,21 @@ body{
 /* body with head and bubble */
 .body{display:flex;flex-direction:column;gap:6px;max-width:78%}
 .head{font-size:10px;color:var(--muted);letter-spacing:0.06em}
-.bubble{
-  padding:10px 12px;
-  background:linear-gradient(180deg,#0b1220,#07101a);
-  border:2px solid rgba(255,255,255,0.03);
-  border-radius:6px;
-  font-size:12px;
-  line-height:1.2;
-  color:#e6f1ff;
+.bubble {
+  font-family: 'FusionPixel', 'Press Start 2P', monospace;
+  padding: 10px 12px;
+  background: linear-gradient(180deg,#0b1220,#07101a);
+  border: 2px solid rgba(255,255,255,0.03);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: #e6f1ff;
   box-shadow: 6px 6px 0 rgba(0,0,0,0.35);
-  white-space:pre-wrap;
-  word-break:break-word;
+  white-space: pre-wrap;
+  word-break: break-word;
+  image-rendering: pixelated;       /* 保持像素风 */
+  -webkit-font-smoothing: none;     /* 禁止平滑 */
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* composer */
