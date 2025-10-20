@@ -1,12 +1,166 @@
-<!-- index.html -->
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Yusun 的个人网站</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Yusun Chat — Pixel Chat</title>
+
+  <!-- Pixel font (Google Fonts: Press Start 2P) -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Hello — 这是 yusun.dpdns.org</h1>
-  <p>欢迎来到我的个人网站！</p>
+  <div id="app" class="wrap">
+    <header class="topbar">
+      <div class="logo">🟦 Yusun Pixel Chat</div>
+      <div class="status" id="status">connecting...</div>
+    </header>
+
+    <main class="chat-area" id="chatArea">
+      <div id="messages" class="messages"></div>
+    </main>
+
+    <form id="composer" class="composer" autocomplete="off">
+      <input id="nameInput" class="name" type="text" maxlength="18" placeholder="Your name" />
+      <input id="messageInput" class="message" type="text" maxlength="300" placeholder="Say something..." />
+      <button class="send" type="submit">→</button>
+    </form>
+
+    <div class="credits">Pixel chat • No backend server (Firebase Realtime DB)</div>
+  </div>
+
+  <!-- Firebase SDK (modular) -->
+  <script type="module">
+    // ----- 1) Paste your Firebase config here -----
+    // Replace the below placeholder with your Firebase project's config object
+    const firebaseConfig = {
+      apiKey: "AIzaSyDTsIpbHMiS4VLLtA-JF4Mo-u7s38fYDJ4",
+      authDomain: "yusun-chat.firebaseapp.com",
+      databaseURL: "https://yusun-chat-default-rtdb.firebaseio.com",
+      projectId: "yusun-chat",
+      storageBucket: "yusun-chat.firebasestorage.app",
+      messagingSenderId: "1069324400323",
+      appId: "1:1069324400323:web:6805254031c3e14c9e1476"
+      measurementId: "G-TYNCPLVX2B"
+    };
+    // ----------------------------------------------
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import {
+      getDatabase, ref, push, onChildAdded, query, limitToLast, serverTimestamp, onValue
+    } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // init
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // UI refs
+    const messagesEl = document.getElementById('messages');
+    const nameInput = document.getElementById('nameInput');
+    const messageInput = document.getElementById('messageInput');
+    const composer = document.getElementById('composer');
+    const statusEl = document.getElementById('status');
+
+    // small local name persistence
+    const LOCAL_NAME_KEY = 'yusun_chat_name';
+    const savedName = localStorage.getItem(LOCAL_NAME_KEY) || '';
+    nameInput.value = savedName;
+
+    // room path (you can change to multiple rooms later)
+    const messagesRef = ref(db, 'rooms/default/messages');
+
+    // connection status simple
+    const connectedRef = ref(db, '.info/connected');
+    onValue(connectedRef, snap => {
+      if (snap.exists() && snap.val() === true) {
+        statusEl.textContent = 'online';
+        statusEl.classList.add('online');
+      } else {
+        statusEl.textContent = 'offline';
+        statusEl.classList.remove('online');
+      }
+    });
+
+    // show last 200 messages
+    const recentQuery = query(messagesRef, limitToLast(200));
+    onChildAdded(recentQuery, (snap) => {
+      const data = snap.val();
+      if (!data) return;
+      appendMessage(data);
+      // auto-scroll
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
+
+    // sending
+    composer.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = (nameInput.value.trim() || 'Anon').slice(0, 18);
+      const text = messageInput.value.trim();
+      if (!text) return;
+      // persist name
+      localStorage.setItem(LOCAL_NAME_KEY, name);
+      // push message
+      await push(messagesRef, {
+        name,
+        text,
+        ts: serverTimestamp(),
+        colorSeed: simpleHashColor(name)
+      });
+      messageInput.value = '';
+      messageInput.focus();
+    });
+
+    // render single message (pixel style)
+    function appendMessage(data) {
+      const { name, text, ts, colorSeed } = data;
+      const item = document.createElement('div');
+      item.className = 'msg';
+      // avatar square (pixel look)
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.style.background = colorFromSeed(colorSeed);
+      avatar.textContent = (name || 'A')[0]?.toUpperCase() || 'A';
+      // message body
+      const body = document.createElement('div');
+      body.className = 'body';
+      const head = document.createElement('div');
+      head.className = 'head';
+      head.textContent = `${name}`;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = text;
+      body.appendChild(head);
+      body.appendChild(bubble);
+
+      item.appendChild(avatar);
+      item.appendChild(body);
+      messagesEl.appendChild(item);
+
+      // tiny appear animation
+      requestAnimationFrame(() => {
+        item.classList.add('visible');
+      });
+    }
+
+    // deterministic color from name
+    function simpleHashColor(str) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < str.length; i++) {
+        h = Math.imul(h ^ str.charCodeAt(i), 16777619) >>> 0;
+      }
+      return h;
+    }
+    function colorFromSeed(seed) {
+      // seed -> H color value
+      const hue = seed % 360;
+      // pick bold-saturated palette
+      return `hsl(${hue}deg 70% 45%)`;
+    }
+
+    // focus message
+    messageInput.focus();
+
+  </script>
 </body>
 </html>
