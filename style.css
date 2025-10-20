@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'FusionPixel';
+  src: url('assets/fonts/fusion-pixel-font-12px-monospaced-regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body, input, button, textarea {
+  font-family: 'FusionPixel', 'Press Start 2P', monospace;
+  font-size: 14px; /* 可以按需要微调 */
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.5px;
+}
+
 :root{
   --bg: #071018;
   --panel: #0f1720;
