@@ -47,18 +47,10 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
     import {
-      getDatabase, ref, push, onChildAdded, query, limitToLast, serverTimestamp, onValue
+    getDatabase, ref, push, onChildAdded, query, limitToLast, serverTimestamp, onValue
     } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
-    import { initializeAppCheck, ReCaptchaV3Provider } 
-    from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app-check.js";
 
-    // init
     const app = initializeApp(firebaseConfig);
-    const appCheck = initializeAppCheck(app, {
-    provider: new ReCaptchaV3Provider('6LeJ5vErAAAAAHonMVluUX_vG9Dy6aUZjtphFIyk'),
-    isTokenAutoRefreshEnabled: true
-});
-
     const db = getDatabase(app);
 
     // UI refs
