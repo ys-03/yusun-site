@@ -1,0 +1,189 @@
+@font-face {
+  font-family: 'FusionPixel';
+  src: url('assets/fonts/fusion-pixel-12px-proportional-zh_hans.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* 可选，保证字体加载慢时有 fallback */
+}
+
+body, input, button, textarea {
+  font-family: 'FusionPixel', 'Press Start 2P';
+  font-size: 14px; 
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.5px;
+}
+
+:root{
+  --bg: #071018;
+  --panel: #0f1720;
+  --muted: #9aa8b2;
+  --accent: #7ef;
+  --chat-bg: #071018;
+  --bubble: #111827;
+  --bubble-user: #0ea5a1;
+}
+
+/* Pixel / retro feel */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Press Start 2P", system-ui, monospace;
+  background: linear-gradient(180deg,#021018 0%, #061622 100%);
+  color:#dbeafe;
+}
+
+/* container */
+.wrap{
+  max-width:960px;
+  height:100vh;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+  padding:0.8rem;
+}
+
+/* topbar */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.25);
+  border:3px solid rgba(255,255,255,0.03);
+  padding:0.75rem 1rem;
+  border-radius:8px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+}
+.logo{font-size:0.9rem}
+.status{
+  font-size:10px;
+  padding:4px 8px;
+  border-radius:6px;
+  background:rgba(0,0,0,0.45);
+  color:var(--muted);
+}
+.status.online{
+  color:#042;
+  background: #7ef;
+  box-shadow: 0 2px 8px rgba(126, 239, 255, 0.08) inset;
+}
+
+/* chat area */
+.chat-area{
+  flex:1;
+  overflow:hidden;
+  border-radius:8px;
+  padding:0.75rem;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:2px solid rgba(255,255,255,0.03);
+}
+
+.messages{
+  height:100%;
+  overflow:auto;
+  padding:6px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* message */
+.msg{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  transform:translateY(6px) scale(0.98);
+  opacity:0;
+  transition:all 160ms cubic-bezier(.2,.9,.3,1);
+}
+.msg.visible{
+  transform:none;
+  opacity:1;
+}
+
+/* avatar: pixel square */
+.avatar{
+  min-width:48px;
+  min-height:48px;
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  color:#061018;
+  border-radius:6px;
+  image-rendering:pixelated;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.35);
+  border:3px solid rgba(255,255,255,0.02);
+  font-weight:700;
+}
+
+/* body with head and bubble */
+.body{display:flex;flex-direction:column;gap:10px;max-width:78%;margin-bottom: 12px;  /* 每条消息下面的空隙 */}
+.head{font-size:10px;color:var(--muted);letter-spacing:0.06em}
+.bubble {
+  font-family: 'FusionPixel', 'Press Start 2P', monospace;
+  padding: 10px 12px;
+  background: linear-gradient(180deg,#0b1220,#07101a);
+  border: 2px solid rgba(255,255,255,0.03);
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #e6f1ff;
+  box-shadow: 6px 6px 0 rgba(0,0,0,0.35);
+  white-space: pre-wrap;
+  word-break: break-word;
+  image-rendering: pixelated;       /* 保持像素风 */
+  -webkit-font-smoothing: none;     /* 禁止平滑 */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* composer */
+.composer{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:0.5rem;
+  background:transparent;
+}
+.name{
+  width:170px;
+  padding:8px 10px;
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,0.03);
+  background:rgba(0,0,0,0.25);
+  color:#dff;
+  letter-spacing:0.04em;
+}
+.message{
+  flex:1;
+  padding:8px 10px;
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,0.03);
+  background:rgba(0,0,0,0.28);
+  color:#fff;
+  outline:none;
+}
+.send{
+  padding:10px 14px;
+  border-radius:6px;
+  background: linear-gradient(180deg,#30d5f9,#0aa4d6);
+  border:none;
+  color:#021018;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.25);
+}
+
+/* credits */
+.credits{
+  text-align:center;
+  color: #9aa8b2;
+  font-size:11px;
+  margin-top:4px;
+}
